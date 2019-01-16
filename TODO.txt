@@ -1,0 +1,19 @@
+TODO
+
+// Just a way to outline what we want to do
+
+Aidan:
+1. Cameras
+	> Perspective
+	> Movement
+2. AI 1
+	> Vision
+3. Navigation Mesh
+	> Choosing terrain
+	> Creating mesh and links
+-  AI 2
+	4. > Pathfinding
+	5. > AI Input/Output (states)
+	6. > Decision making
+7. Lighting
+8. Timeline
