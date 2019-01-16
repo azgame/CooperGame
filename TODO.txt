@@ -17,3 +17,17 @@ Aidan:
 	6. > Decision making
 7. Lighting
 8. Timeline
+
+Ryan:
+1. Models
+    >Rigging and adding animations to unity
+    >Making an enemy
+2. Movement
+    >Walk, Run, Attack, jump
+3. Procedural Animation
+    >Creating keystones and letting the computer decide what combination of animations should be shown
+    	(i.e. crouching and running)
+4. More movement options
+    >Wall jump, Wall run, Rope Swinging
+	Combat movement options
+		> Air attacks, ground running attacks, disarm, parry
