@@ -29,7 +29,7 @@ public class Character : MonoBehaviour {
         //Vector3 forwardmovement = new Vector3(dz * hspeed * transform.forward.x, 0.0f, dz * zspeed * transform.forward.z);
         //Vector3 strafemovement = new Vector3(dx * hspeed * transform.forward.z, 0.0f, dz * zspeed * transform.forward.z);
         //rb.velocity = forwardmovement;
-        rb.velocity = transform.forward * dz * zspeed;
+        rb.velocity = new Vector3(transform.forward.x * dx * hspeed, 0.0f, transform.forward.z * dz * zspeed);
     }
 
     void OnCollisionEnter(Collision collision) {
@@ -44,7 +44,7 @@ public class Character : MonoBehaviour {
 
     void MovementManagement(float horizontal, float vertical) {
         // If there is some axis input...
-        if (horizontal != 0f || vertical != 0f) {
+        if (horizontal != 0.0f || vertical != 0.0f) {
             // ... set the players rotation and set the speed parameter to 5.3f.
             Rotating(horizontal, vertical);
         }

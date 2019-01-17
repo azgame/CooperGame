@@ -15,18 +15,26 @@ public class CameraController : MonoBehaviour {
     private float rate = 0.0f;
     private float mouseX = 0.0f;
     private float prevMouseX = 0.0f;
+    private Vector3 position;
+    private Vector3 offset;
 
     void Start() {
 
-        // Cursor.visible = false;
+        offset = transform.position - target.position;
     }
 
     void Update() {
 
-        mouseX = Camera.main.ScreenToViewportPoint(Input.mousePosition).x;
-        
+        RotateCamera();
+        position = new Vector3(target.position.x + offset.x + yaw, target.position.y + offset.y, target.position.z + offset.z);
+        transform.position = position;
+    }
 
-        if (mouseX >= 0.65f && mouseX <=0.75f && mouseX > prevMouseX) {
+    void RotateCamera() {
+
+        mouseX = Camera.main.ScreenToViewportPoint(Input.mousePosition).x;
+
+        if (mouseX >= 0.65f && mouseX <= 0.75f && mouseX > prevMouseX) {
             yaw -= speedH * Input.GetAxis("Mouse X");
             rate = 0.0f;
         }
@@ -54,7 +62,7 @@ public class CameraController : MonoBehaviour {
         // transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
         transform.LookAt(target);
-        transform.Translate(new Vector3(yaw, 0.0f, 0.0f) * speedH);
+        //transform.Translate(new Vector3(yaw, 0.0f, 0.0f) * speedH);
 
         prevMouseX = mouseX;
     }
