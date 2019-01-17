@@ -5,7 +5,7 @@ using UnityEngine;
 public class DollyZoom : MonoBehaviour {
 
     public Transform target;
-    public Camera camera;
+    public new Camera camera;
 
     public float OblV;
     public float OblH;

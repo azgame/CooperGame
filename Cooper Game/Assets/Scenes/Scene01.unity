@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -390,7 +390,6 @@ GameObject:
   - component: {fileID: 1197812308}
   - component: {fileID: 1197812307}
   - component: {fileID: 1197812306}
-  - component: {fileID: 1197812309}
   - component: {fileID: 1197812310}
   m_Layer: 0
   m_Name: Main Camera
@@ -457,28 +456,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197812305}
   m_LocalRotation: {x: 0.06975647, y: -0, z: -0, w: 0.9975641}
-  m_LocalPosition: {x: 4.4300003, y: 1.26, z: -1.2700005}
+  m_LocalPosition: {x: 2.81, y: 1.26, z: -1.2700005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 8, y: 0, z: 0}
---- !u!114 &1197812309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1197812305}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7166f427c0ae1dc4ba9785c1d3b868e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1207890504}
-  camera: {fileID: 1197812307}
-  OblV: 0.2
-  OblH: 0
 --- !u!114 &1197812310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,9 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcabd7fa923c71a44b4853ebe8352561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedH: 0.2
-  speedV: 2
   target: {fileID: 1207890504}
+  rotateSpeed: 5
 --- !u!1 &1207890498
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,10 +525,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a232408c8d88ce4dae8c572f1746a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hspeed: 5
-  zspeed: 5
+  hspeed: 10
+  zspeed: 10
   camera: {fileID: 1197812307}
-  turnSmoothing: 2
+  turnSmoothing: 3
 --- !u!136 &1207890501
 CapsuleCollider:
   m_ObjectHideFlags: 0
