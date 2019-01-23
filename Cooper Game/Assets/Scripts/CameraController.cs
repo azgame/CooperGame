@@ -45,12 +45,22 @@ public class CameraController : MonoBehaviour {
 
     void Update() {
 
-        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Right Joystick X") != 0) {
+        if (Input.GetAxis("Mouse X") != 0) {
             yaw += Input.GetAxis("Mouse X") * rotateSpeed;
             rate = 0.0f;
             camCount = 0.0f;
         }
-        else if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Right Joystick Y") != 0) {
+        else if (Input.GetAxis("Mouse Y") != 0) {
+            pitch -= Input.GetAxis("Mouse Y") * rotateSpeed;
+            rate = 0.0f;
+            camCount = 0.0f;
+        }
+        else if (Input.GetAxis("Right Joystick X") != 0) {
+            yaw += Input.GetAxis("Right Joystick X") * rotateSpeed;
+            rate = 0.0f;
+            camCount = 0.0f;
+        }
+        else if (Input.GetAxis("Right Joystick Y") != 0) {
             pitch -= Input.GetAxis("Mouse Y") * rotateSpeed;
             rate = 0.0f;
             camCount = 0.0f;

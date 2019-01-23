@@ -22,12 +22,12 @@ public class Character : MonoBehaviour {
     void Update() {
 
         // TODO: Move this logic into a charMove/charController script
-        float dx = Input.GetAxisRaw("Horizontal");
-        float dz = Input.GetAxisRaw("Vertical");
+        float dx = Input.GetAxis("Horizontal");
+        float dz = Input.GetAxis("Vertical");
 
         /*
-          + Input.GetAxisRaw("Left Joystick X")
-          + Input.GetAxisRaw("Left Joystick Y")
+          + Input.GetAxis("Left Joystick X")
+          + Input.GetAxis("Left Joystick Y")
         */
         
         forward = camera.transform.forward;
