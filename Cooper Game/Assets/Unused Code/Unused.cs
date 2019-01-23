@@ -4,37 +4,63 @@
 
     mouseX = Camera.main.ScreenToViewportPoint(Input.mousePosition).x;
 
-    if (mouseX >= 0.65f && mouseX <= 0.75f && mouseX > prevMouseX) {
-        yaw -= speedH * Input.GetAxis("Mouse X");
-        rate = 0.0f;
-    }
-    else if (mouseX <= 0.35f && mouseX >= 0.25f && mouseX < prevMouseX) {
-        yaw -= speedH * Input.GetAxis("Mouse X");
-        rate = 0.0f;
-    }
-    else if (mouseX > 0.75f) {
-        yaw -= speedH * Input.GetAxis("Mouse X");
-        rate = 0.0f;
-    }
-    else if (mouseX < 0.25f) {
-        yaw -= speedH * Input.GetAxis("Mouse X");
-        rate = 0.0f;
-    }
-    else {
-        if (rate < 1) {
-            rate += Time.deltaTime / time;
-            rate = Mathf.Clamp(rate, 0, time);
-            yaw = Mathf.Lerp(yaw, 0, rate);
+        if (mouseX >= 0.55f && mouseX <= 0.75f && mouseX > prevMouseX) {
+            yaw += rotateSpeed * Input.GetAxis("Mouse X");
+            rate = 0.0f;
         }
-    }
+        else if (mouseX <= 0.45f && mouseX >= 0.25f && mouseX < prevMouseX) {
+            yaw += rotateSpeed * Input.GetAxis("Mouse X");
+            rate = 0.0f;
+        }
+        else if (mouseX > 0.75f) {
+            yaw += rotateSpeed * Input.GetAxis("Mouse X");
+            rate = 0.0f;
+        }
+        else if (mouseX < 0.25f) {
+            yaw += rotateSpeed * Input.GetAxis("Mouse X");
+            rate = 0.0f;
+        }
+        else {
+            if (rate < 1) {
+                rate += Time.deltaTime / time;
+                rate = Mathf.Clamp(rate, 0, time);
+                yaw = Mathf.Lerp(yaw, 0, rate);
+            }
+        }
 
-    // pitch -= speedV * Input.GetAxis("Mouse Y");
-    // transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        mouseY = Camera.main.ScreenToViewportPoint(Input.mousePosition).y;
 
-    transform.LookAt(target);
-    transform.Translate(new Vector3(yaw, 0.0f, 0.0f) * speedH);
+        if (mouseY >= 0.65f && mouseY <= 0.85f && mouseY > prevMouseY) {
+            pitch -= rotateSpeed * Input.GetAxis("Mouse Y");
+            rate = 0.0f;
+        }
+        else if (mouseY <= 0.35f && mouseY >= 0.15f && mouseY < prevMouseY) {
+            pitch -= rotateSpeed * Input.GetAxis("Mouse Y");
+            rate = 0.0f;
+        }
+        else if (mouseY > 0.85f) {
+            pitch -= rotateSpeed * Input.GetAxis("Mouse Y");
+            rate = 0.0f;
+        }
+        else if (mouseY < 0.15f) {
+            pitch -= rotateSpeed * Input.GetAxis("Mouse Y");
+            rate = 0.0f;
+        }
+        else {
+            if (rate < 1) {
+                rate += Time.deltaTime / time;
+                rate = Mathf.Clamp(rate, 0, time);
+                pitch = Mathf.Lerp(pitch, 0, rate);
+            }
+        }
 
-    prevMouseX = mouseX;
+        Quaternion rotation = Quaternion.Euler(Mathf.Clamp(pitch, pitchMinClamp, pitchMaxClamp), yaw, 0);
+        
+        transform.position = target.transform.position - (rotation * offset);
+        transform.LookAt(target.position);
+
+        prevMouseX = mouseX;
+        prevMouseY = mouseY;
 }
 
 

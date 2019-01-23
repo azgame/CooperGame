@@ -4,30 +4,75 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-    public Transform target;
+    // Private
     private Vector3 offset;
+    private float rate;
+    private float yaw;
+    private float pitch;
+    private float camCount;
 
-    public float rotateSpeed = 5;
+    // Public
+    public Transform target;
+    public float pitchMinClamp;
+    public float pitchMaxClamp;
+    public float time;
+
+    public float rotateSpeed;
 
     void Start() {
 
-        Cursor.visible = false;
+        if (pitchMinClamp <= -20 || pitchMinClamp >= 0) {
+            pitchMinClamp = -10;
+            Debug.LogWarning("Pitch Minimum not set properly. Changed to: " + pitchMinClamp.ToString());
+        }
+
+        if (pitchMaxClamp <= -10 || pitchMaxClamp >= 10) {
+            pitchMaxClamp = 0;
+            Debug.LogWarning("Pitch Maximum not set properly. Changed to: " + pitchMaxClamp.ToString());
+        }
+
+        if (time <= 0) {
+            time = 20;
+        }
+
+        yaw = 0;
+        pitch = -5;
+        camCount = 0;
+        rotateSpeed = 5;
         offset = target.position - transform.position;
+        Cursor.visible = false;
     }
 
     void Update() {
 
-        float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
-        target.transform.Rotate(0, horizontal, 0);
+        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Right Joystick X") != 0) {
+            yaw += Input.GetAxis("Mouse X") * rotateSpeed;
+            rate = 0.0f;
+            camCount = 0.0f;
+        }
+        else if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Right Joystick Y") != 0) {
+            pitch -= Input.GetAxis("Mouse Y") * rotateSpeed;
+            rate = 0.0f;
+            camCount = 0.0f;
+        }
+        else {
+            camCount += Time.deltaTime;
+            if (rate < 1 && camCount > 3) {
+                rate += Time.deltaTime / time;
+                rate = Mathf.Clamp(rate, 0, time);
+                yaw = Mathf.Lerp(yaw, target.eulerAngles.y, rate);
+                pitch = Mathf.Lerp(pitch, -5, rate);
+            }
+        }
 
-        float desiredAngle = target.transform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
-        Debug.Log("Angle: " + desiredAngle.ToString());
-        Debug.Log("Horizontal: " + horizontal.ToString());
+        Quaternion rotation = Quaternion.Euler(Mathf.Clamp(pitch, pitchMinClamp, pitchMaxClamp), yaw, 0);
+        
         transform.position = target.transform.position - (rotation * offset);
-
         transform.LookAt(target.position);
-
-        // try the unused code for this to get camera movement down
     }
 }
+
+/*
+  + Input.GetAxis("Right Joystick X") * rotateSpeed
+   + Input.GetAxis("Right Joystick Y") * rotateSpeed
+     */

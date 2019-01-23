@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour {
 
     public float hspeed;
@@ -21,9 +22,14 @@ public class Character : MonoBehaviour {
     void Update() {
 
         // TODO: Move this logic into a charMove/charController script
-        float dx = Input.GetAxis("Horizontal");
-        float dz = Input.GetAxis("Vertical");
+        float dx = Input.GetAxisRaw("Horizontal");
+        float dz = Input.GetAxisRaw("Vertical");
 
+        /*
+          + Input.GetAxisRaw("Left Joystick X")
+          + Input.GetAxisRaw("Left Joystick Y")
+        */
+        
         forward = camera.transform.forward;
 
         MovementManagement(dx, dz);
@@ -42,20 +48,14 @@ public class Character : MonoBehaviour {
     void MovementManagement(float dx, float dz) {
 
         rb.velocity = new Vector3((forward.x * dz * hspeed) + (forward.z * dx * hspeed), 0.0f, (forward.z * dz * zspeed) - (forward.x * dx * hspeed));
-        Rotating();
+        Rotating(dx, dz);
     }
 
-    void Rotating() {
+    void Rotating(float dx, float dz) {
 
-        if (Input.GetKey(KeyCode.Q)) {
-            transform.Rotate(Vector3.down);
-        }
-        else if (Input.GetKey(KeyCode.E)) {
-            transform.Rotate(Vector3.up);
+        Vector3 newDir = new Vector3((forward.x * dz) + (forward.z * dx), 0.0f, (forward.z * dz) - (forward.x * dx));
+        if (newDir != Vector3.zero) {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDir.normalized), 0.2f);
         }
     }
 }
-
-/*
-    Move the player relative to the camera's forward vector, rotate the player according to direction traveling, rotate camera with mouse
-     */
