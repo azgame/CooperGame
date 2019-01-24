@@ -11,6 +11,8 @@ public class Character : MonoBehaviour {
     public float turnSmoothing = 15.0f;
     Rigidbody rb;
     Vector3 forward;
+    float dx;
+    float dz;
 
     // Start is called before the first frame update
     void Start() {
@@ -22,13 +24,13 @@ public class Character : MonoBehaviour {
     void Update() {
 
         // TODO: Move this logic into a charMove/charController script
-        float dx = Input.GetAxis("Horizontal");
-        float dz = Input.GetAxis("Vertical");
+        if (Input.GetAxis("Horizontal") != 0) { dx = Input.GetAxis("Horizontal"); }
+        //else if (Input.GetAxis("Left Joystick X") != 0) { dx = Input.GetAxis("Left Joystick X"); }
+        else { dx = 0; }
 
-        /*
-          + Input.GetAxis("Left Joystick X")
-          + Input.GetAxis("Left Joystick Y")
-        */
+        if (Input.GetAxis("Vertical") != 0) { dz = Input.GetAxis("Vertical"); }
+        //else if (Input.GetAxis("Left Joystick Y") != 0) { dz = Input.GetAxis("Left Joystick Y"); }
+        else { dz = 0; }
         
         forward = camera.transform.forward;
 
