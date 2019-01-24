@@ -3,22 +3,22 @@ TODO
 // Just a way to outline what we want to do
 
 Aidan:
-1. Cameras
+1. Cameras / Controllers
 	> Perspective
 	> Movement
-2. Controller Input
-3. AI 1
+2. AI 1
 	> Vision
-4. Navigation Mesh
+3. Navigation Mesh
 	> Choosing terrain
 	> Creating mesh and links
 AI 2
-	5. > Pathfinding
-	6. > AI Input/Output (states)
-	7. > Decision making
-8. Lighting
-9. Timeline
-10. Shaders/Particles
+	4. > Pathfinding
+	5. > AI Input/Output (states)
+	6. > Decision making
+7. Lighting
+8. Timeline
+9. Shaders/Particles
+10. Physically Based Rendering
 
 Ryan:
 1. Models

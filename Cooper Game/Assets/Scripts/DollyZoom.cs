@@ -7,9 +7,6 @@ public class DollyZoom : MonoBehaviour {
     public Transform target;
     public new Camera camera;
 
-    public float OblV;
-    public float OblH;
-
     private float initHeightAtDist;
     private bool dzEnabled;
 
@@ -47,14 +44,7 @@ public class DollyZoom : MonoBehaviour {
         }
 
         // Simple control to allow the camera to be moved in and out using the up/down arrows.
-        transform.Translate(Input.GetAxis("Vertical") * Vector3.forward * Time.deltaTime * 5f);
+        transform.Translate(Input.GetAxis("Mouse ScrollWheel") * Vector3.forward * Time.deltaTime * 5f);
 
-    }
-
-    void SetObliqueness(float horizObl, float vertObl) {
-        Matrix4x4 mat = Camera.main.projectionMatrix;
-        mat[0, 2] = horizObl;
-        mat[1, 2] = vertObl;
-        Camera.main.projectionMatrix = mat;
     }
 }
