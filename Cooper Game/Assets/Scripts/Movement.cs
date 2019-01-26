@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour{
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
-    [Range(3,50)]
+    [Range(1,5)]
     public float speed;
 
     bool isGrounded;
@@ -24,15 +24,26 @@ public class Movement : MonoBehaviour{
 
         if (isGrounded){
             if (Input.GetButtonDown("Jump")){
-                GetComponent<Rigidbody>().velocity = Vector3.up * jumpVelocity;
+                rb.velocity = Vector3.up * jumpVelocity;
             }
         }
         
     }
+
+    void OnCollisionEnter(Collision collision){
+        if (collision.gameObject.tag == "Ground"){
+            isGrounded = true;
+        }
+    }
+    void OnCollisionExit(Collision collision){
+        if (collision.gameObject.tag == "Ground"){
+            isGrounded = false;
+        }
+    }
+
     void FixedUpdate()
     {
         Jump();
-
     }
     
 
@@ -42,7 +53,7 @@ public class Movement : MonoBehaviour{
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        rb.AddForce(movement * speed);
+        rb.velocity += movement;
     }
 
     void Jump(){
