@@ -8,6 +8,7 @@ public class Character : MonoBehaviour {
     // Private
     Rigidbody rb;
     Vector3 forward;
+    Vector3 movement;
     float dx;
     float dz;
 
@@ -15,7 +16,6 @@ public class Character : MonoBehaviour {
     public float hspeed;
     public float zspeed;
     public float turnSmoothing;
-    public new Camera camera;
     public bool isControllerEnabled;
 
     // Start is called before the first frame update
@@ -37,10 +37,32 @@ public class Character : MonoBehaviour {
             turnSmoothing = 15.0f;
             Debug.LogWarning("Turn Smoothing not set properly. Defaulting to: " + turnSmoothing.ToString());
         }
+
     }
 
     // Update is called once per frame
     void Update() {
+
+        InputManager();
+        forward = GetForward();
+        MovementManagement();
+    }
+
+    void MovementManagement() {
+
+        movement = new Vector3((forward.x * dz) + (forward.z * dx), 0.0f, (forward.z * dz) - (forward.x * dx));
+        rb.velocity = movement * hspeed;
+        Rotating();
+    }
+
+    void Rotating() {
+
+        if (movement != Vector3.zero) {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement.normalized), 0.2f);
+        }
+    }
+
+    void InputManager() {
 
         if (isControllerEnabled) {
             if (Input.GetAxis("Left Joystick X") != 0) { dx = Input.GetAxis("Left Joystick X"); }
@@ -54,33 +76,10 @@ public class Character : MonoBehaviour {
             if (Input.GetAxis("Vertical") != 0) { dz = Input.GetAxis("Vertical"); }
             else { dz = 0; }
         }
-
-        // TODO: Move to CharacterController
-        forward = camera.transform.forward;
-        MovementManagement();
     }
 
-    void OnCollisionEnter(Collision collision) {
+    Vector3 GetForward() { return Camera.main.transform.forward; }
 
-        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    void OnCollisionStay(Collision collision) {
-
-        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    void MovementManagement() {
-
-        rb.velocity = new Vector3((forward.x * dz * hspeed) + (forward.z * dx * hspeed), 0.0f, (forward.z * dz * zspeed) - (forward.x * dx * hspeed));
-        Rotating(dx, dz);
-    }
-
-    void Rotating(float dx, float dz) {
-
-        Vector3 newDir = new Vector3((forward.x * dz) + (forward.z * dx), 0.0f, (forward.z * dz) - (forward.x * dx));
-        if (newDir != Vector3.zero) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDir.normalized), 0.2f);
-        }
-    }
+    void OnCollisionEnter(Collision collision) { rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
+    void OnCollisionStay(Collision collision) { rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
 }
