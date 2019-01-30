@@ -5,39 +5,40 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour {
 
-    // Private
+    // Components
     Rigidbody rb;
+
+    // Ground Movement
     Vector3 forward;
     Vector3 movement;
     float dx;
     float dz;
-
-    // Public
-    public float hspeed;
-    public float zspeed;
+    [Range(1, 5)]
+    public float speed;
     public float turnSmoothing;
+    public float groundRadius;
+    bool isGrounded;
+
+    // Air Movement
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
+    public float jumpVelocity;
+    Vector3 jumpVec;
+
+    // HID
     public bool isControllerEnabled;
 
     // Start is called before the first frame update
     void Start() {
 
         rb = GetComponent<Rigidbody>();
-        
-        if (hspeed <= 0) {
-            hspeed = 10.0f;
-            Debug.LogWarning("H-Speed not set properly. Defaulting to: " + hspeed.ToString());
-        }
-
-        if (zspeed <= 0) {
-            zspeed = 10.0f;
-            Debug.LogWarning("Z-Speed not set properly. Defaulting to: " + zspeed.ToString());
-        }
 
         if (turnSmoothing <= 0) {
             turnSmoothing = 15.0f;
             Debug.LogWarning("Turn Smoothing not set properly. Defaulting to: " + turnSmoothing.ToString());
         }
-
+        isGrounded = true;
+        jumpVec = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -45,13 +46,16 @@ public class Character : MonoBehaviour {
 
         InputManager();
         forward = GetForward();
+    }
+
+    void FixedUpdate() {
         MovementManagement();
     }
 
     void MovementManagement() {
 
-        movement = new Vector3((forward.x * dz) + (forward.z * dx), 0.0f, (forward.z * dz) - (forward.x * dx));
-        rb.velocity = movement * hspeed;
+        GroundMovement();
+        Jump();
         Rotating();
     }
 
@@ -78,8 +82,47 @@ public class Character : MonoBehaviour {
         }
     }
 
+    void GroundMovement() {
+
+        if (isGrounded) {
+            if (Input.GetButtonDown("Jump")) {
+                jumpVec = Vector3.up * jumpVelocity;
+            }
+        }
+        else {
+            jumpVec = Vector3.zero;
+        }
+
+        movement = new Vector3((forward.x * dz) + (forward.z * dx), jumpVec.y, (forward.z * dz) - (forward.x * dx));
+        rb.velocity = movement * speed;
+    }
+
+    void Jump() {
+        if (rb.velocity.y <= 0) {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump")) {
+            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+    }
+
     Vector3 GetForward() { return Camera.main.transform.forward; }
 
-    void OnCollisionEnter(Collision collision) { rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
-    void OnCollisionStay(Collision collision) { rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
+    void OnCollisionEnter(Collision collision) {
+        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+        if (collision.gameObject.tag == "Ground") {
+            Debug.Log("ground collision");
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionStay(Collision collision) {
+        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    void OnCollisionExit(Collision collision) {
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = false;
+        }
+    }
 }
