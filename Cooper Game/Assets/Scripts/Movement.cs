@@ -53,7 +53,7 @@ public class Movement : MonoBehaviour{
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        rb.velocity += movement;
+        rb.velocity = movement * speed;
     }
 
     void Jump(){

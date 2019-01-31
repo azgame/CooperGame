@@ -13,10 +13,10 @@ public class Character : MonoBehaviour {
     Vector3 movement;
     float dx;
     float dz;
+    bool jump;
     [Range(1, 5)]
     public float speed;
     public float turnSmoothing;
-    public float groundRadius;
     bool isGrounded;
 
     // Air Movement
@@ -24,11 +24,11 @@ public class Character : MonoBehaviour {
     public float lowJumpMultiplier = 2f;
     public float jumpVelocity;
     Vector3 jumpVec;
+    public float groundCheckDist;
 
     // HID
     public bool isControllerEnabled;
 
-    // Start is called before the first frame update
     void Start() {
 
         rb = GetComponent<Rigidbody>();
@@ -41,7 +41,6 @@ public class Character : MonoBehaviour {
         jumpVec = Vector3.zero;
     }
 
-    // Update is called once per frame
     void Update() {
 
         InputManager();
@@ -59,68 +58,68 @@ public class Character : MonoBehaviour {
         Rotating();
     }
 
-    void Rotating() {
-
-        if (movement != Vector3.zero) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement.normalized), 0.2f);
-        }
-    }
-
     void InputManager() {
 
         if (isControllerEnabled) {
-            if (Input.GetAxis("Left Joystick X") != 0) { dx = Input.GetAxis("Left Joystick X"); }
-            else { dx = 0; }
-            if (Input.GetAxis("Left Joystick Y") != 0) { dz = -Input.GetAxis("Left Joystick Y"); }
-            else { dz = 0; }
+            dx = Input.GetAxis("Left Joystick X");
+            dz = Input.GetAxis("Left Joystick Y");
         }
         else {
-            if (Input.GetAxis("Horizontal") != 0) { dx = Input.GetAxis("Horizontal"); }
-            else { dx = 0; }
-            if (Input.GetAxis("Vertical") != 0) { dz = Input.GetAxis("Vertical"); }
-            else { dz = 0; }
+            dx = Input.GetAxis("Horizontal");
+            dz = Input.GetAxis("Vertical");
+            jump = Input.GetButtonDown("Jump");
         }
     }
 
     void GroundMovement() {
-
-        if (isGrounded) {
-            if (Input.GetButtonDown("Jump")) {
-                jumpVec = Vector3.up * jumpVelocity;
-            }
-        }
-        else {
-            jumpVec = Vector3.zero;
-        }
 
         movement = new Vector3((forward.x * dz) + (forward.z * dx), jumpVec.y, (forward.z * dz) - (forward.x * dx));
         rb.velocity = movement * speed;
     }
 
     void Jump() {
-        if (rb.velocity.y <= 0) {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+
+        if (isGrounded) {
+            jumpVec = Vector3.zero;
+            if (jump) {
+                jumpVec = Vector3.up * jumpVelocity;
+                isGrounded = false;
+            }
         }
-        else if (rb.velocity.y > 0 && !Input.GetButton("Jump")) {
-            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+
+        if (jumpVec.y < 0) {
+            jumpVec += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (jumpVec.y > 0 && !Input.GetButton("Jump")) {
+            jumpVec += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
+
+    void Rotating() {
+
+        if ((movement.x != 0.0f || movement.z != 0.0f) && isGrounded) {
+            Vector3 lookAt = new Vector3(movement.x, 0.0f, movement.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookAt).normalized, 0.2f);
+        }
+    }
+
 
     Vector3 GetForward() { return Camera.main.transform.forward; }
 
     void OnCollisionEnter(Collision collision) {
-        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+        rb.angularVelocity = Vector3.zero;
         if (collision.gameObject.tag == "Ground") {
-            Debug.Log("ground collision");
+            Debug.Log("grounded");
             isGrounded = true;
         }
     }
 
     void OnCollisionStay(Collision collision) {
-        rb.angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+        rb.angularVelocity = Vector3.zero;
     }
 
     void OnCollisionExit(Collision collision) {
+        rb.angularVelocity = Vector3.zero;
         if (collision.gameObject.tag == "Ground") {
             isGrounded = false;
         }
