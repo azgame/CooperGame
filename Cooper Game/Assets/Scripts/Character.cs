@@ -72,9 +72,14 @@ public class Character : MonoBehaviour {
     }
 
     void GroundMovement() {
-
-        movement = new Vector3((forward.x * dz) + (forward.z * dx), jumpVec.y, (forward.z * dz) - (forward.x * dx));
-        rb.velocity = movement * speed;
+        if (isGrounded) {
+            movement = new Vector3((forward.x * dz) + (forward.z * dx), jumpVec.y, (forward.z * dz) - (forward.x * dx));
+            rb.velocity = movement * speed;
+        }
+        else {
+            movement = new Vector3(rb.velocity.x, jumpVec.y * speed, rb.velocity.z);
+            rb.velocity = movement;
+        }
     }
 
     void Jump() {
@@ -82,7 +87,7 @@ public class Character : MonoBehaviour {
         if (isGrounded) {
             jumpVec = Vector3.zero;
             if (jump) {
-                jumpVec = Vector3.up * jumpVelocity;
+                jumpVec = (rb.velocity + Vector3.up) * jumpVelocity;
                 isGrounded = false;
             }
         }
@@ -109,7 +114,6 @@ public class Character : MonoBehaviour {
     void OnCollisionEnter(Collision collision) {
         rb.angularVelocity = Vector3.zero;
         if (collision.gameObject.tag == "Ground") {
-            Debug.Log("grounded");
             isGrounded = true;
         }
     }
