@@ -17,6 +17,7 @@ public class FieldOfView : MonoBehaviour {
     public LayerMask targetMask;
     public LayerMask obstacleMask;
     public MeshFilter meshFilter;
+    public bool tarSeen;
     Mesh viewMesh;
     Vector3 pos;
     Vector3 feet;
@@ -42,6 +43,7 @@ public class FieldOfView : MonoBehaviour {
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         meshFilter.mesh = viewMesh;
+        tarSeen = false;
     }
 
     void Update() {
@@ -72,17 +74,6 @@ public class FieldOfView : MonoBehaviour {
         else {
             v = vertices;
         }
-
-        //DrawFieldOfView(v);
-
-        //Debug.Log("------------------------------------------------");
-        for (int i = 0; i < v.Count; i++) {
-            //Debug.DrawLine(feet, v[i], new Color(0f + ((float)i * 0.025f), 0f + ((float)i * 0.025f), 0f + ((float)i * 0.025f), 1));
-            //float angle = (float)(Mathf.Atan2(feet.z - v[i].z, feet.x - v[i].x) * Mathf.Rad2Deg);
-            //if (angle < 0) angle += 360f;
-            //Debug.Log(v[i].ToString());
-            //Debug.Log(FindDegree(feet, v[i]));
-        }
     }
 
     void ScanView() {
@@ -94,8 +85,12 @@ public class FieldOfView : MonoBehaviour {
             if (InView(target.position, this.transform.forward, fovx, angles)) {
                 float tarDist = Vector3.Distance(feet, target.position);
                 if (!Physics.Raycast(feet, target.transform.position, tarDist, obstacleMask)) {
+                    tarSeen = true;
                     Debug.DrawLine(this.transform.position, target.transform.position, Color.yellow);
                 }
+            }
+            else {
+                tarSeen = false;
             }
         }
     }

@@ -10,8 +10,8 @@ Aidan:
 	> Vision				X
 3. Navigation Mesh			-
 AI 2						-
-	4. > Pathfinding		-
-	5. > AI States			-
+	4. > AI States			-
+	5. > AI States 2		-
 	6. > Decision making	-
 7. Lighting					-
 8. Timeline					-
