@@ -88,6 +88,9 @@ public class FieldOfView : MonoBehaviour {
                     tarSeen = true;
                     Debug.DrawLine(this.transform.position, target.transform.position, Color.yellow);
                 }
+                else if (Physics.Raycast(feet, target.transform.position, tarDist)) {
+
+                }
             }
             else {
                 tarSeen = false;
