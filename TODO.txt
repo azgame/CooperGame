@@ -8,15 +8,15 @@ Aidan:
 	> Movement				X
 2. AI 1						X
 	> Vision				X
-3. Navigation Mesh			-
+3. Navigation Mesh			X
 AI 2						-
-	4. > AI States			-
-	5. > AI States 2		-
+	4. > AI Behaviour Tree	-
+	5. > AI Behaviour Tree	-
 	6. > Decision making	-
 7. Lighting					-
 8. Timeline					-
 9. Shaders/Particles		-
-10. PBR						-
+10. Shaders/Particles		-
 
 Ryan:
 1. Models
