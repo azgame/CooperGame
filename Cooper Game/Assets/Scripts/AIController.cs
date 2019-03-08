@@ -12,6 +12,18 @@ public class AIController : MonoBehaviour {
     public Transform target;
     FieldOfView fov;
 
+
+    // AI Pipeline
+    /// <summary>
+    /// AI input - check view for inputs
+    /// AI input - check sound map for inputs
+    /// Organize input, state, and location
+    /// Given state, what decision path should we take?
+    /// Decision function
+    /// Ai output - given decision, decide state, location to move to, action to take
+    /// </summary>
+
+    
     void Start() {
         agent = GetComponent<NavMeshAgent>();
         fov = GetComponent<FieldOfView>();

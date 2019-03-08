@@ -3,20 +3,20 @@ TODO
 // Just a way to outline what we want to do
 
 Aidan:
-1. Cameras / Controllers	X
-	> Perspective			X
-	> Movement				X
-2. AI 1						X
-	> Vision				X
-3. Navigation Mesh			X
-AI 2						-
-	4. > AI Behaviour Tree	-
-	5. > AI Behaviour Tree	-
-	6. > Decision making	-
-7. Lighting					-
-8. Timeline					-
-9. Shaders/Particles		-
-10. Shaders/Particles		-
+1. Cameras / Controllers		X
+	> Perspective				X
+	> Movement					X
+2. AI 1							X
+	> Vision					X
+3. Navigation Mesh				X
+AI 2							-
+	4. > AI Behaviour Tree		-
+	5. > AI Behaviour Tree 2	-
+	6. > Decision making		-
+7. Lighting						-
+8. Timeline						-
+9. Shaders/Particles			-
+10. Shaders/Particles			-
 
 Ryan:
 1. Models

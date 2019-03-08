@@ -18,12 +18,12 @@ public class FieldOfView : MonoBehaviour {
     public LayerMask obstacleMask;
     public MeshFilter meshFilter;
     public bool tarSeen;
+    public bool drawView;
     Mesh viewMesh;
     Vector3 pos;
     Vector3 feet;
     Vector3[] angles;
     List<Vector3> vertices;
-
 
     public Vector3 DirFromAngleX(float ax_, float ay_) {
         ax_ += transform.eulerAngles.y;
@@ -38,7 +38,6 @@ public class FieldOfView : MonoBehaviour {
 
     void Start() {
 
-        ///angles = new Vector3[] { DirFromAngleX(-fovx / 2.0f, fovy), DirFromAngleX(fovx / 2.0f, fovy), DirFromAngleY(-fovy / 2.0f), DirFromAngleY(fovy / 2.0f) };
         vertices = new List<Vector3>();
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
@@ -74,8 +73,12 @@ public class FieldOfView : MonoBehaviour {
         else {
             v = vertices;
         }
+
+        if (drawView)
+            DrawFieldOfView(v);
     }
 
+    // public bool ScanView(Vector3 pos_, Vector3 tar_, FieldOfView fov, LayerMask tars_, LayerMask obs_) {}
     void ScanView() {
 
         Collider[] tarInView = Physics.OverlapSphere(feet, viewRadius, targetMask);
@@ -87,17 +90,20 @@ public class FieldOfView : MonoBehaviour {
                 if (!Physics.Raycast(feet, target.transform.position, tarDist, obstacleMask)) {
                     tarSeen = true;
                     Debug.DrawLine(this.transform.position, target.transform.position, Color.yellow);
+                    // return true;
                 }
                 else if (Physics.Raycast(feet, target.transform.position, tarDist)) {
-
+                    // do something
                 }
             }
             else {
                 tarSeen = false;
+                // return false;
             }
         }
     }
 
+    // public List<Vector3> AddVertices(List<Vector3> vertices) {}
     void AddVertices() {
 
         vertices.Add(CheckRayCast(feet, feet + (new Vector3(angles[0].x, 0.0f, angles[0].z) * viewRadius)));
@@ -106,9 +112,10 @@ public class FieldOfView : MonoBehaviour {
         
         Collider[] obs = Physics.OverlapSphere(feet, viewRadius);
         Corners(obs);
+        // return vertices;
     }
 
-
+    // List<Vector3> Corners(Collider[] obs_, List<Vector3> vertices_) {}
     void Corners(Collider[] obs) {
 
         foreach (Collider col in obs) {
@@ -135,10 +142,14 @@ public class FieldOfView : MonoBehaviour {
                 }
             }
         }
+
+        // return vertices;
     }
 
+    // List<Vector3> SortVertices(List<Vector3> vertices_) {}
     void SortVertices() {
         vertices.Sort((a, b) => FindDegree(feet, b).CompareTo(FindDegree(feet, a)));
+        // return vertices_;
     }
 
     float FindDegree(Vector3 origin, Vector3 v) {
@@ -167,6 +178,7 @@ public class FieldOfView : MonoBehaviour {
         }
     }
 
+    // DrawFieldOfView(List<Vector3> v_, Mesh viewMesh_) {}
     void DrawFieldOfView(List<Vector3> v) {
 
         viewMesh.Clear();
