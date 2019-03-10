@@ -9,14 +9,15 @@ Aidan:
 2. AI 1							X
 	> Vision					X
 3. Navigation Mesh				X
+NXT								-
+	4. NXT 1					-
+	5. NXT 2					-
+6. API Design					-
 AI 2							-
-	4. > AI Behaviour Tree		-
-	5. > AI Behaviour Tree 2	-
-	6. > Decision making		-
-7. Lighting						-
-8. Timeline						-
-9. Shaders/Particles			-
-10. Shaders/Particles			-
+	7. > AI Behaviour Tree		-
+	8. > AI Behaviour Tree 2	-
+	9. > Decision making		-
+10. Shaders						-
 
 Ryan:
 1. Models
