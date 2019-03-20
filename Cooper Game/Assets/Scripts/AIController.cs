@@ -6,12 +6,12 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class AIController : MonoBehaviour {
 
-
+    
     public NavMeshAgent agent;
-    public Vector3 destination;
-    public Transform target;
+    public LayerMask tarMask;
+    public LayerMask obs;
     FieldOfView fov;
-
+    Vector3 destination;
 
     // AI Pipeline
     /// <summary>
@@ -23,25 +23,19 @@ public class AIController : MonoBehaviour {
     /// Ai output - given decision, decide state, location to move to, action to take
     /// </summary>
 
-    
+
     void Start() {
         agent = GetComponent<NavMeshAgent>();
         fov = GetComponent<FieldOfView>();
     }
-	
-	
+
+
     void Update() {
 
-        destination.x = target.position.x;
-        destination.y = this.transform.position.y;
-        destination.z = target.position.z;
-
-        if (fov.tarSeen) {
-            agent.SetDestination(destination);
-        }
-        else {
+        if (fov.ScanView(this.transform.position, this.transform.forward, tarMask, obs))
+            agent.SetDestination(fov.FindDestination(this.transform.position, tarMask));
+        else
             agent.SetDestination(this.transform.position);
-        }
 
         this.transform.Rotate(0.0f, this.transform.forward.y, 0.0f);
     }
