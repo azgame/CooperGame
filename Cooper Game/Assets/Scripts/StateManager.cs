@@ -13,7 +13,7 @@ public class StateManager : MonoBehaviour
     [HideInInspector]
     public Rigidbody rb;
 
-    public float delta;
+    float delta;
 
     public void Init()
     {
@@ -32,13 +32,13 @@ public class StateManager : MonoBehaviour
             }
             else
             {
-                aciveMdl = anim.gameObject;
+                activeMdl = anim.gameObject;
             }
         }
 
         if (anim = null)
             anim = activeMdl.GetComponent<Animator>();
-
+        if(anim)
         anim.applyRootMotion = false;
 
     }
