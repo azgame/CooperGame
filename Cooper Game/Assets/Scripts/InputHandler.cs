@@ -1,43 +1,75 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class InputHandler : MonoBehaviour
+namespace COOPER
 {
-    float vert;
-    float hori;
-    float delta;
-
-    StateManager state;
-    CameraManager camera;
-    // Start is called before the first frame update
-    void Start()
+    public class InputHandler : MonoBehaviour
     {
-        state = GetComponent<StateManager>();
-        state.Init();
+        float vert;
+        float hori;
+        float delta;
+        bool sprint;
 
-        camera = CameraManager.singleton;
-        camera.Init(this.transform);
-    }
+        StateManager state;
+        CameraManager camManager;
+        // Start is called before the first frame update
+        void Start()
+        {
+            state = GetComponent<StateManager>();
+            state.Init();
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        delta = Time.fixedDeltaTime;
-        hori = Input.GetAxis("Horizontal");
-        vert = Input.GetAxis("Vertical");
-    }
+            camManager = CameraManager.singleton;
+            camManager.Init(this.transform);
+        }
 
-    void Update()
-    {
-        delta = Time.deltaTime;
-        camera.Tick(delta);
-    }
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            delta = Time.fixedDeltaTime;
+            GetInput();
+            UpdateState();
+            state.FixedTick(delta);
+            camManager.Tick(delta);
+        }
 
-    void UpdateState()
-    {
-        state.horizontal = hori;
-        state.vertical = vert;
-        state.Tick(delta);
+        void GetInput()
+        {
+            hori = Input.GetAxis("Horizontal");
+            vert = Input.GetAxis("Vertical");
+            sprint = Input.GetButton("Sprint");
+        }
+
+        void Update()
+        {
+            delta = Time.deltaTime;
+            state.Tick(delta);
+        }
+
+        void UpdateState()
+        {
+            state.horizontal = hori;
+            state.vertical = vert;
+
+            Move();
+            
+        }
+
+        void Move()
+        {
+            Vector3 v = state.vertical * camManager.transform.forward;
+            Vector3 h = state.horizontal * camManager.transform.right;
+            state.moveDir = (v + h).normalized;
+
+            float m = Mathf.Abs(hori) + Mathf.Abs(vert);
+            state.moveAmount = Mathf.Clamp01(m);
+
+            if (sprint)
+            {
+                state.run = (state.moveAmount > 0);
+            } else
+            {
+                state.run = false;
+            }
+        }
     }
 }
