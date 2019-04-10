@@ -36,10 +36,10 @@ public class FieldOfView : MonoBehaviour {
     void Update() {
         pos = this.transform.position;
         forward = this.transform.forward;
-        angles = CreateFrustrum(this.fovx, this.fovy);
+        angles = CreateFrustum(this.fovx, this.fovy);
     }
 
-    public Vector3[] CreateFrustrum(float fovx_, float fovy_) {
+    public Vector3[] CreateFrustum(float fovx_, float fovy_) {
         angles = new Vector3[] { DirFromAngleX(-fovx_ / 2.0f, fovy_),
                                  DirFromAngleX(fovx_ / 2.0f, fovy_),
                                  DirFromAngleY(-fovy_ / 2.0f),
@@ -51,11 +51,13 @@ public class FieldOfView : MonoBehaviour {
 
         Collider[] tarInView = Physics.OverlapSphere(pos_, viewRadius, tarMask_);
 
-        foreach(Collider c in tarInView) {
-            
-            if (InView(pos_, c.transform.position, forward_, fovx, angles)) {
+        foreach(Collider c in tarInView)
+        {
+            if (InView(pos_, c.transform.position, forward_, fovx, angles))
+            {
                 float tarDist = Vector3.Distance(pos_, c.transform.position);
-                if (!Physics.Raycast(pos_, c.transform.position, tarDist, obs_)) {
+                if (!Physics.Raycast(pos_, c.transform.position, tarDist, obs_))
+                {
                     Debug.DrawLine(pos_, c.transform.position, Color.yellow);
                     return true;
                 }
