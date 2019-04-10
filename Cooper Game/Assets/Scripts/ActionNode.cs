@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Generic leaf node
 public class ActionNode : Node {
 
     public delegate NodeStates ActionNodeDelegate();
