@@ -10,7 +10,11 @@ public class ActionNode : Node {
     protected ActionNodeDelegate m_action;
     protected GameObject ai;
 
-    public ActionNode(ActionNodeDelegate action) { m_action = action; }
+    public ActionNode(ActionNodeDelegate action, GameObject ai_) 
+    {
+        m_action = action;
+        ai = ai_;
+    }
 
     public override NodeStates Evaluate() 
     {

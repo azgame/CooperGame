@@ -203,17 +203,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3c027535d37144183c45ac5754d040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fovx: 100
+  fovx: 110
   fovy: 60
-  viewRadius: 15
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  meshFilter: {fileID: 1367804155}
-  tarSeen: 0
+  viewRadius: 20
 --- !u!114 &1874908965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +219,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  destination: {x: 0, y: 0, z: 0}
-  target: {fileID: 0}
+  tarMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  obs:
+    serializedVersion: 2
+    m_Bits: 1024
+  walkRadius: 30
 --- !u!108 &990055738
 Light:
   m_ObjectHideFlags: 0

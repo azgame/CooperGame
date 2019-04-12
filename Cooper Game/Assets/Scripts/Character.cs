@@ -62,7 +62,7 @@ public class Character : MonoBehaviour {
 
         if (isControllerEnabled) {
             dx = Input.GetAxis("Left Joystick X");
-            dz = Input.GetAxis("Left Joystick Y");
+            dz = -Input.GetAxis("Left Joystick Y");
         }
         else {
             dx = Input.GetAxis("Horizontal");

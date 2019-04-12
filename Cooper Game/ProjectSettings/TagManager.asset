@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Ground
+  - AI
   layers:
   - Default
   - TransparentFX

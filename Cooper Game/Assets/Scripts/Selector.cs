@@ -5,11 +5,9 @@ using UnityEngine;
 // Composite nodes
 public class Selector : Node {
 
-
     protected List<Node> m_nodes = new List<Node>();
 
     public Selector(List<Node> nodes) { m_nodes = nodes; }
-
 
     public override NodeStates Evaluate() 
     {

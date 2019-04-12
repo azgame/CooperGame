@@ -28,7 +28,6 @@ public class AIController : MonoBehaviour {
     /// Ai output - given decision, decide state, location to move to, action to take
     /// </summary>
 
-
     void Start() {
         targetSequenceNodes = new List<Node>();
         idlePatrolSequenceNodes = new List<Node>();
@@ -46,6 +45,7 @@ public class AIController : MonoBehaviour {
         idlePatrolSequenceNodes.Add(new WalkNode(MoveTowardsTarget, this.gameObject, ref agent));
         randomDestinationSequence = new Sequence(idlePatrolSequenceNodes);
 
+        // Add sequences to list for root selector
         List<Node> nodes = new List<Node>();
         nodes.Add(findTargetSequence);
         nodes.Add(randomDestinationSequence);
@@ -61,6 +61,8 @@ public class AIController : MonoBehaviour {
         this.transform.Rotate(0.0f, this.transform.forward.y, 0.0f);
     }
 
+
+    // Functions to pass to nodes, can be anywhere
     Node.NodeStates FindTarget(GameObject ai, LayerMask tarMask, LayerMask obs) 
     {
         Vector3 pos = ai.transform.position;
@@ -93,12 +95,10 @@ public class AIController : MonoBehaviour {
         randomDirection += pos;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas)) {
-            Debug.Log("Found random location");
             agent.SetDestination(hit.position);
             return Node.NodeStates.SUCCESS;
         }
         else {
-            Debug.Log("No location found");
             return Node.NodeStates.FAILURE;
         }
         

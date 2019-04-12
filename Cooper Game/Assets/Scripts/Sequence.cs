@@ -5,7 +5,7 @@ using UnityEngine;
 // Composite nodes
 public class Sequence : Node {
 
-    private List<Node> m_nodes = new List<Node>();
+    protected List<Node> m_nodes = new List<Node>();
 
     public Sequence(List<Node> nodes) { m_nodes = nodes; }
 
