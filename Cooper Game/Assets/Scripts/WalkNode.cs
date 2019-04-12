@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-// Generic leaf node
-public class ActionNode : Node {
+public class WalkNode : Node {
 
-    public delegate NodeStates ActionNodeDelegate();
+    public delegate NodeStates WalkNodeDelegate(GameObject ai, ref NavMeshAgent agent_);
 
-    protected ActionNodeDelegate m_action;
+    protected WalkNodeDelegate m_action;
     protected GameObject ai;
+    protected NavMeshAgent agent;
 
-    public ActionNode(ActionNodeDelegate action) { m_action = action; }
+    public WalkNode(WalkNodeDelegate action, GameObject ai_, ref NavMeshAgent agent_) {
+        m_action = action;
+        ai = ai_;
+        agent = agent_;
+    }
 
-    public override NodeStates Evaluate() 
-    {
-        switch (m_action()) 
-        {
+    public override NodeStates Evaluate() {
+        switch (m_action(ai, ref agent)) {
             case NodeStates.SUCCESS:
                 m_nodeState = NodeStates.SUCCESS;
                 return m_nodeState;

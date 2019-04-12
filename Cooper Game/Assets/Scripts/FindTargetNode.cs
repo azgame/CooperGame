@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Generic leaf node
-public class ActionNode : Node {
+public class FindTargetNode : Node {
 
-    public delegate NodeStates ActionNodeDelegate();
+    public delegate NodeStates FindTargetNodeDelegate(GameObject ai, LayerMask target, LayerMask obs);
 
-    protected ActionNodeDelegate m_action;
+    protected FindTargetNodeDelegate m_action;
     protected GameObject ai;
+    private LayerMask target;
+    private LayerMask obs;
 
-    public ActionNode(ActionNodeDelegate action) { m_action = action; }
-
-    public override NodeStates Evaluate() 
+    public FindTargetNode(FindTargetNodeDelegate action, GameObject ai_, LayerMask target_, LayerMask obs_) 
     {
-        switch (m_action()) 
-        {
+        m_action = action;
+        ai = ai_;
+        target = target_;
+        obs = obs_;
+    }
+
+    public override NodeStates Evaluate() {
+        switch (m_action(ai, target, obs)) {
             case NodeStates.SUCCESS:
                 m_nodeState = NodeStates.SUCCESS;
                 return m_nodeState;

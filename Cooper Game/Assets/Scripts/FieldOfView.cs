@@ -82,11 +82,11 @@ public class FieldOfView : MonoBehaviour {
 
         Collider[] c = Physics.OverlapSphere(pos_, viewRadius, tarMask_);
 
-        foreach(Collider t in c) {
+        foreach(Collider t in c) 
+        {
             RaycastHit r;
-            if (Physics.Raycast(pos_, (new Vector3(t.transform.position.x, pos_.y, t.transform.position.z) - pos_).normalized, out r, viewRadius)) {
+            if (Physics.Raycast(pos_, (new Vector3(t.transform.position.x, pos_.y, t.transform.position.z) - pos_).normalized, out r, viewRadius))
                 return new Vector3(r.point.x, pos_.y, r.point.z);
-            }
             else
                 return pos_;
         }
