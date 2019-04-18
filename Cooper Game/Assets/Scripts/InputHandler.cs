@@ -8,6 +8,7 @@ namespace COOPER
         float vert;
         float hori;
         float delta;
+        bool jump;
         bool sprint;
 
         StateManager state;
@@ -37,6 +38,7 @@ namespace COOPER
             hori = Input.GetAxis("Horizontal");
             vert = Input.GetAxis("Vertical");
             sprint = Input.GetButton("Sprint");
+            jump = Input.GetButton("Jump");
         }
 
         void Update()
@@ -62,6 +64,13 @@ namespace COOPER
 
             float m = Mathf.Abs(hori) + Mathf.Abs(vert);
             state.moveAmount = Mathf.Clamp01(m);
+            if (jump)
+            {
+                state.jump = true;
+            } else
+            {
+                state.jump = false;
+            }
 
             if (sprint)
             {

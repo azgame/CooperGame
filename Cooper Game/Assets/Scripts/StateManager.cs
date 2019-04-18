@@ -17,6 +17,7 @@ namespace COOPER
         public Vector3 moveDir;
 
         [Header("Stats")]
+        public float jumpSpeed = 4.5f;
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
@@ -25,6 +26,7 @@ namespace COOPER
         [Header("States")]
         public bool run;
         public bool onGround;
+        public bool jump;
 
         [HideInInspector]
         public Rigidbody rb;
