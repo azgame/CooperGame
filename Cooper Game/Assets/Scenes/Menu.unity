@@ -454,7 +454,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Play -- Aiden
+  m_Text: Play -- Aidan
 --- !u!222 &259263818
 CanvasRenderer:
   m_ObjectHideFlags: 0
