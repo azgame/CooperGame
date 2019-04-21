@@ -67,12 +67,14 @@ namespace COOPER
             if (jump)
             {
                 state.jump = true;
+                if (state.run || state.wallTouch)
+                    state.Jump();
             } else
             {
                 state.jump = false;
             }
 
-            if (sprint)
+            if (sprint && state.onGround)
             {
                 state.run = (state.moveAmount > 0);
             } else

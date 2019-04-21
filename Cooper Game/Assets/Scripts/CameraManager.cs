@@ -16,6 +16,8 @@ namespace COOPER
         float turnSmoothing = .1f;
         public float minAngle = -35;
         public float maxAngle = 35;
+        [HideInInspector]
+        public Vector3 forward;
 
         float smoothX;
         float smoothY;
@@ -81,6 +83,7 @@ namespace COOPER
 
             FollowTarget(d);
             HandleRot(d, v, h, targetSpeed);
+            forward = pivot.forward;
         }
 
         public static CameraManager singleton;

@@ -7,6 +7,7 @@ namespace COOPER
     {
         [Header("Init")]
         public GameObject activeMdl;
+        public GrapplingHook gh;
         [HideInInspector]
         public Animator anim;
 
@@ -22,11 +23,13 @@ namespace COOPER
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
+        Vector3 jumpVec;
 
         [Header("States")]
         public bool run;
         public bool onGround;
         public bool jump;
+        public bool wallTouch;
 
         [HideInInspector]
         public Rigidbody rb;
@@ -45,8 +48,12 @@ namespace COOPER
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
+            jumpVec.x = 0; jumpVec.y = jumpSpeed; jumpVec.z = 0;
 
             anim.SetBool("onGround", true);
+
+            wallTouch = false;
+            prevGround = true;
         }
 
         void SetupAnimator()
@@ -84,7 +91,7 @@ namespace COOPER
             if (run)
                 targetSpeed = runSpeed;
 
-
+            
             // if using a controller than you'll see when you slightly tilt the joystick you'll walk slowly
             if(onGround)
                 rb.velocity = moveDir * (targetSpeed * moveAmount);
@@ -109,18 +116,76 @@ namespace COOPER
 
         public bool OnGround()
         {
+            if (skipGroundCheck)
+            {
+                skipTimer += delta;
+                if (skipTimer > 0.2f)
+                    skipGroundCheck = false;
+                prevGround = false;
+                return false;
+            }
+            bool r = false;
+            skipTimer = 0;
             Vector3 origin = transform.position + (Vector3.up * toGround);
             Vector3 dir = -Vector3.up;
-            float dis = toGround + 0.3f;
+            float dis = toGround + 0.1f;
             RaycastHit hit;
             if (Physics.Raycast(origin, dir, out hit, dis))
             {
                 Vector3 targetPosition = hit.point;
                 transform.position = targetPosition;
-                return true;
+                r = true;
             }
-            return false;
+            if(r && !prevGround)
+            {
+                anim.Play("jump_land");
+            }
+
+            prevGround = r;
+            return r;
         }
+
+        public 
+
+        bool skipGroundCheck;
+        float skipTimer;
+        bool prevGround;
+
+        public void Jump()
+        {
+
+            anim.Play("jump_launch");
+            Vector3 targetVel = transform.forward * 5;
+            targetVel.y = 6;
+            rb.velocity = targetVel;
+            skipGroundCheck = true;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "Wall")
+            {
+                wallTouch = true;
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.tag == "Wall")
+            {
+                wallTouch = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.tag == "Wall")
+            {
+                wallTouch = false;
+            }
+        }
+
+
         void HandleMovementAnimations()
         {
             anim.SetFloat("vertical", moveAmount, 0.4f, delta);
